@@ -12,7 +12,15 @@ const taskRoute = require('./Routes/taskRoute');
 
 const app = express();
 
-app.use(cors({ origin: process.env.URL || '*', credentials: true }));
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    /\.vercel\.app$/ // Allows all Vercel preview and production deployments
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Simulated-Role', 'X-Simulate-Failure']
+}));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev', {
     skip: (req) => req.path === '/health',
 }));
